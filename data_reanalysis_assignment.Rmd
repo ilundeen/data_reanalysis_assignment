@@ -36,7 +36,8 @@ knitr::opts_chunk$set(
 ##Here:
 ###I will be carrying out 3 of the sets of pgls regressions run - 1)the original branch length, 2)the transformed branch length using maximum likelihood estimates for Grafen's rho, 3) the maximum likelihood estimates for Pagel's lambda. I attempted to run the Ornstein-Uhlenbeck transformation but was not able to produce a usable tree so it was excluded from this exercise. I will pull data from Silcox et al.2009 published either as supplementary data or directly in tables within the text.
 ###I will then predict agility scores in fossils based regressions using one of these branch transformations for each semicircular canal and the average semicircular canal radius. This will be in comparison to Table 5 within the publication.
-###I will then plot extant primates and fossil stem/crown primates for each log10 transformed semicircular canal radius and log10 transformed body mass. Extant taxa will be labelled by agility category.   
+###I will then plot extant primates and fossil stem/crown primates for each log10 transformed semicircular canal radius and log10 transformed body mass. Extant taxa will be labelled by agility category.
+###They didn't really do any descriptive statistics but for the purpose of this assignment I'm going to use the describeBy() function in the beginning to get some descriptives of the orders within my data initally.
 
 #to carry out Silcox et al 2009's stats I had to pull data from Silcox et al., 2009; Spoor et al. 2007; Kay and kirk, 2000; and Schulz, 1940. 
 
@@ -71,6 +72,10 @@ data<-read.csv(curl("https://raw.githubusercontent.com/ilundeen/data_reanalysis_
 #this data set was downloaded as a supplementary file
 ```{r make tree and data comparable}
 head(data) #checking to see if that data looks fine
+
+library(psych) #psych package contains the describeBy function
+describeBy(data,group=data$Order,mat=FALSE) #get descriptive statistics by Order of my dataset
+
 ```
 ###There's a lot of NA because many of the predictions are specifically for primates - none of which are visible when looking at the first 6 species in the data set
 ```{r}
@@ -364,7 +369,6 @@ Agility_predictions<-cbind(prim.ant.pred, prim.pos.pred, prim.lat.pred, prim.avg
 rownames(Agility_predictions)<- c("Carpolestes simpsoni", "C. simpsoni", "Dryomomys szalayi", "Tinimomys graybulliensis", "Microsyops cf. latidens", "M. annectens", "Ignacius graybullianus", "Plesiadapis cookei", "P. tricuspidens", "Pronothodectes gaoi","P. gaoi", "Adapis sp.", "Adapis sp.", "A. parisiensis", "A. parisiensis", "Magnadapis quercyi", "M. aff. intermedius", "Leptadapis leenhardti", "Cantius nuniensis", "Notharctus tenebrosus", "N. tenebrosus", "Smilodectes gracilis", "S. gracilis", "Omomys carteri", "O. carteri", "Shoshonius cooperi", "Microchoerus", "Necrolemur antiquus", "Rooneyia viejaensis") #renaming each row to species names 
 colnames(Agility_predictions)<-c("Anterior SCC","Posterior SCC", "Lateral SCC", "Average SCC" ) #renaming the columns so they reflect which SCC was used to generate this prediciton
 Agility_predictions #show the final compilation of predicted agility scores. 
-
 
 
 ```
